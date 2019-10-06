@@ -5,6 +5,7 @@ export const CHECKOUT_FAILURE = 'CHECKOUT_FAILURE'
 export const RECEIVE_PRODUCTS = 'RECEIVE_PRODUCTS'
 
 export const TEST = 'TEST'
+export const TEST2 = 'TEST2'
 
 //get active(all) employees
 export const GET_ALL_EMP = 'GET_ALL_EMP'

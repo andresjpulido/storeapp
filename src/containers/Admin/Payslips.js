@@ -4,24 +4,24 @@ import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-import fetchEmployeesAction from '../../api/fetchEmployees';
-import {getEmployeesError, getEmployees, getEmployeesPending} 
-from '../../redux/reducers/employeeReducer';
+import fetchPayslipAction from '../../api/fetchPayslips';
+import {getPayslipsError, getPayslips, getPayslipsPending} 
+from '../../redux/reducers/payslipReducer';
 import store from '../../redux/store.js';
 
-class Employees extends Component {
+class payslips extends Component {
 
   state = {
     amount: 0,
     type: "Toki",
     size: "Small",
-    employees: [],
+    payslips: [],
     columns: [{
-      dataField: 'firstName',
-      text: 'Name'
+      dataField: 'description',
+      text: 'Description'
     },
     {
-      dataField: 'lastName',
+      dataField: 'id',
       text: 'Last Name',
       sort: true
     }] 
@@ -51,12 +51,12 @@ class Employees extends Component {
   handleNewEmp = (e) => {
     e.preventDefault();
     //this.props.history.push('/employee')
-    const {fetchEmployees} = this.props;
-    fetchEmployees();
+    const {fetchPayslips} = this.props;
+    fetchPayslips();
     console.log(" ******* handleNewEmp *******")
     console.log(this.props)
 
-    console.log(getEmployees(this.state))
+    console.log(getPayslips(this.state))
     console.log(this.state)
     console.log(this.props)
     
@@ -67,27 +67,27 @@ class Employees extends Component {
 
   componentWillMount() {
     
-    const {fetchEmployees} = this.props;
-    fetchEmployees();
-    console.log(this.state.employees)
+    const {fetchPayslips} = this.props;
+    fetchPayslips();
+    console.log(this.state.payslips)
 }
 
   render() {
  
-    const {employees, error, pending} = this.props;
-    console.log(employees, error, pending)
+    const {payslips, error, pending} = this.props;
+    console.log(payslips, error, pending)
  
     return (
       <div className="container">
 
         <br /><br /><br />
-        <h4>Employees</h4>
+        <h4>Payslips</h4>
 
         <BootstrapTable
           striped
           hover
           keyField='id'
-          data={this.props.employees}
+          data={this.props.payslips}
           columns={this.state.columns} />
   
         <button id="b1" class="btn btn-secondary" type="button" onClick={this.handleNewEmp}>Create new</button>
@@ -100,13 +100,13 @@ class Employees extends Component {
 const mapStateToProps = (state) => {
   return {
     error: state.error,
-    employees: state.employeeReducer.employees,
+    payslips: state.payslipReducer.payslips,
     pending: state.pending
   }
 }
  
 const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchEmployees: fetchEmployeesAction
+  fetchPayslips: fetchPayslipAction
 }, dispatch)  
 
-export default (connect(mapStateToProps, mapDispatchToProps))(Employees);
+export default (connect(mapStateToProps, mapDispatchToProps))(payslips);

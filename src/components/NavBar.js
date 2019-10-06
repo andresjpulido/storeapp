@@ -55,6 +55,7 @@ console.log(session)
                 <ul class="dropdown-menu">
                   <li class="text-center"><Link to={`/admin`}>Admin</Link></li>
                   <li class="text-center"><Link to={`/employees`}>Employees</Link></li>
+                  <li class="text-center"><Link to={`/payslips`}>Payslips</Link></li>
                 </ul>
               </li>              
               <li class="dropdown">

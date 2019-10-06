@@ -15,6 +15,7 @@ import Admin from './Admin/Admin';
 import Employees from './Admin/Employees';
 import Employee from './Admin/Employee';
 import Payslip from './EA/Payslip';
+import Payslips from './Admin/Payslips';
 import OnePayslip from './EA/OnePayslip';
 
 class App extends Component {
@@ -93,7 +94,12 @@ console.log(session)
                 path="/payslip"
                 exact
                 component={Payslip}
-              />        
+              />    
+              <Route
+                path="/payslips"
+                exact
+                component={Payslips}
+              />   
               <Route
                 path="/onepayslip"
                 exact

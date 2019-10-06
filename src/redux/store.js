@@ -1,25 +1,23 @@
 import thunk from 'redux-thunk'
 import { getAllProducts } from './actions'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import employee, * as fromEmployee from './reducers/employeeReducer'
+import employeeReducer, * as fromEmployee from './reducers/employeeReducer'
 import hour from './reducers/hourReducer'
 import inventory from './reducers/inventoryReducer'
 import order from './reducers/orderReducer'
-import payslip from './reducers/payslipReducer'
-
-const middleware = [thunk];
-
-const reducer = combineReducers({
-    employee, 
+import payslipReducer from './reducers/payslipReducer'
+ 
+const rootReducer = combineReducers({
+    employeeReducer, 
     hour,
     inventory,
     order,
-    payslip
+    payslipReducer
 })
 
 const store = createStore(
-    reducer,
-    applyMiddleware(...middleware)
+    rootReducer,
+    applyMiddleware(thunk)
 )
 
 export default store;

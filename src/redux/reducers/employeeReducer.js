@@ -1,48 +1,46 @@
-import * as types from '../constants/ActionTypes'
+//import * as types from '../constants/ActionTypes'
+import {FETCH_EMPLOYEES_PENDING, FETCH_EMPLOYEES_SUCCESS, FETCH_EMPLOYEES_ERROR} 
+from '../actions/employeeActions';
+
+  const initialState = {
+    pending: false,
+    employees: [],
+    error: null,
+    test:"ok"
+}
   
-  const initialState = [{
-    "name": "Juan Daniel Arias",
-    "id": 1,
-    "notes": "",
-    "active": true,
-    "phone" : "021 345 543"
-},
-{
-    "name": "Juan",
-    "id": 2,
-    "notes": "",
-    "active": true,
-    "phone" : "021 345 543"
-},
-{
-    "name": "Ernesto Ovalle",
-    "id": 3,
-    "notes": "",
-    "active": true,
-    "phone" : "021 345 543"
-},
-{
-    "name": "Andres Pulido",
-    "id": 4,
-    "notes": "",
-    "active": true,
-    "phone" : "021 345 543"
-}]
-    //mapear todos los reducers
   
-  const cart = (state = initialState, action) => {
+export default (state = initialState, action) => {
     switch (action.type) {
-      case types.TEST:
-        return initialState
-      case types.TEST:
-        return action.cart
-      case types.GET_ALL_EMP:
-        console.log("ejecutando esta cosa");
-        return initialState
+      
+      case FETCH_EMPLOYEES_PENDING: 
+        return {
+            ...state,
+            pending: true
+        }
+      case FETCH_EMPLOYEES_SUCCESS:
+          console.log("FETCH_EMPLOYEES_SUCCESS:", action.employees)
+          return {
+              ...state,
+              pending: false,
+              employees: action.payload.employees,
+              test:"no ok"
+          } 
+      case FETCH_EMPLOYEES_ERROR:
+          return {
+              ...state,
+              pending: false,
+              error: action.error,
+              employees: []
+          }
+         
       default:
-        return initialState
+        return {...state}
     }
   }
   
-  export default cart
+
+  export const getEmployees = state => state.employees;
+  export const getEmployeesPending = state => state.pending;
+  export const getEmployeesError = state => state.error;
   

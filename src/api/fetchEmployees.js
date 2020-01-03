@@ -7,7 +7,7 @@ function fetchEmployees() {
         fetch('http://localhost:4000/api/employees', { 
             method: 'get', 
             headers: new Headers({
-              'Authorization': 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlhdCI6MTU3MDM0MzIwNywiZXhwIjoxNTcxNTUyODA3fQ.-IYW5S9E5vuvotQFvLB0XHJjf_Eln6In-aJk3LBez08',
+              'Authorization': 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlhdCI6MTU3MzUzODg1NywiZXhwIjoxNTc0NzQ4NDU3fQ.B2P5ta8GKPrhmtPKJOlVcj82iKkdPK1tUveyoLWuEpw',
               'Content-Type': 'application/x-www-form-urlencoded'
             }) 
           })

@@ -1,27 +1,46 @@
 import React, { Component } from 'react';
-import axios from 'axios'
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {addHour} from '../../redux/actions/hourActions'
 
 class NewEA extends Component {
+ 
+  constructor(props) {
+    super(props); 
+    
+    this.state = { 
+    };
 
-  handleSubmit = (e) => {
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit (e) {
+
     e.preventDefault();
-    this.props.history.push('/student')
+    var hour = {
+      id_emp: 1,
+      activity: this.props.hour.activity,
+      start_date: new Date(),
+      end_date: new Date()
+    }
+    console.log(hour)
+    this.props.addHour(hour);
+    this.props.history.push('/ea')
   }
+  
+  handleChange(e) { 
+    const target = e.target;
+    const name = target.name;
+    const value = target.value;
 
+    this.setState({
+      [name]: value,
+    })
+    
+    this.props.hour[name]= value;
 
-  test = () => {
-    axios.get("http://localhost:1337/message")
-      .then(function (response) {
-        console.log(response.data);
-
-      })
-      .catch(function (error) {
-        console.log("An error has occurred.")
-
-      });
   }
-
-
 
   render() {
     return (
@@ -30,26 +49,48 @@ class NewEA extends Component {
         <br /><br /><br />
         <h4>New Extra Hour</h4>
 
-        <form>
-
+        <form onSubmit={this.handleSubmit}>
+ 
           <div class="form-group">
             <label for="dateInput">Date</label>
             <input type="date" class="form-control" id="dateInput" placeholder="" />
           </div>
           <div class="form-group">
             <label for="amountInput">Amount</label>
-            <input type="text" class="form-control" id="amountInput" placeholder="" />
+            <select class="form-control" id="amountInput" value={this.props.hour.amount} 
+              onChange={this.handleChange} >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="24">24</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="activitiesInput">Activities</label>
-            <textarea class="form-control" id="activitiesInput" placeholder="" />
+            <textarea class="form-control" id="activitiesInput" name="activity" value={this.props.hour.activity} onChange={this.handleChange} />
           </div>
 
         </form>
-        <button type="button" onClick={this.test} className="btn btn-primary float-right">Save</button>
+        <button type="submit" onClick={this.handleSubmit} className="btn btn-primary float-right">Save</button>
       </div>
     );
   }
 }
 
-export default NewEA;
+
+const mapStateToProps = (state) => {
+  return {
+    error: state.error,
+    unpaidHours: state.hourReducer.unpaidHours,
+    pending: state.pending,
+    hour: state.hourReducer.hour
+  }
+}
+ 
+const mapDispatchToProps = dispatch => bindActionCreators({ 
+  addHour: addHour
+}, dispatch)  
+
+export default (connect(mapStateToProps, mapDispatchToProps))(NewEA); 
+ 

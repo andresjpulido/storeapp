@@ -14,7 +14,7 @@ import NewEA from './EA/NewEA';
 import Admin from './Admin/Admin';
 import Employees from './Admin/Employees';
 import Employee from './Admin/Employee';
-import Payslip from './EA/Payslip';
+import Payslip from './Admin/Payslip';
 import Payslips from './Admin/Payslips';
 import OnePayslip from './EA/OnePayslip';
 

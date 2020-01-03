@@ -1,5 +1,5 @@
  
-import {FETCH_PAYSLIPS_PENDING, FETCH_PAYSLIPS_SUCCESS, FETCH_PAYSLIPS_ERROR} 
+import {GET_PAYSLIPS, FETCH_PAYSLIPS_SUCCESS, FETCH_PAYSLIPS_ERROR} 
 from '../actions/payslipActions';
 
   const initialState = {
@@ -12,13 +12,14 @@ from '../actions/payslipActions';
   export default (state = initialState, action) => {
     switch (action.type) {
       
-      case FETCH_PAYSLIPS_PENDING: 
+      case GET_PAYSLIPS: 
+ 
         return {
             ...state,
-            pending: true
+            pending: false,
+            payslips: action.payload,
         }
       case FETCH_PAYSLIPS_SUCCESS:
-          console.log("FETCH_PAYSLIPS_SUCCESS:", action.payslips)
           return {
               ...state,
               pending: false,
@@ -35,10 +36,10 @@ from '../actions/payslipActions';
          
       default:
         return {...state}
+
     }
   }
   
-
   export const getPayslips = state => state.payslips;
   export const getPayslipsPending = state => state.pending;
   export const getPayslipsError = state => state.error;

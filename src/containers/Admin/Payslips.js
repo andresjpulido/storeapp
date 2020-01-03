@@ -1,13 +1,38 @@
 import React, { Component } from 'react';
-import axios from 'axios'
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-import fetchPayslipAction from '../../api/fetchPayslips';
-import {getPayslipsError, getPayslips, getPayslipsPending} 
-from '../../redux/reducers/payslipReducer';
-import store from '../../redux/store.js';
+ 
+import {getPayslips} from '../../redux/actions/payslipActions';
+ 
+
+function operateFormatter (value, row, index)   {
+  return [
+    '<a class="like" href="javascript:void(0)" title="Like">',
+    '<i class="fa fa-heart"></i>',
+    '</a>  ',
+    '<a class="remove" href="javascript:void(0)" title="Remove">',
+    '<i class="fa fa-trash"></i>',
+    '</a>'
+  ].join('')
+}
+ 
+window.operateEvents = {
+  'click .like': function (e, value, row, index) {
+    alert('You click like action, row: ' + JSON.stringify(row))
+  } 
+}
+
+function activeFormatter(cell, row) {
+  var url = "http://localhost:4000/api/payslippdf/" + cell 
+
+  return (
+    <div> 
+      <a href = {url} target = "_blank">Pdf {cell}</a>       
+    </div>
+  );
+}
 
 class payslips extends Component {
 
@@ -21,17 +46,36 @@ class payslips extends Component {
       text: 'Description'
     },
     {
-      dataField: 'id',
-      text: 'Last Name',
+      dataField: 'createdAt',
+      text: 'Date',
       sort: true
-    }] 
-  }
+    },
+    {
+      dataField: 'employeeid',
+      text: 'Employee',
+      sort: true,
+      clickToSelect: false,
+    },
+    {
+      dataField: 'id',
+      text: 'File',
+      sort: true,
+      
+       
+      formatter: activeFormatter 
 
-  constructor(props) {
-    super(props);  
-    //is.handleNewEmp = this.handleNewEmp.bind(this);
+    } 
+    ] 
   }
  
+  activeFormatter = (cell, row) =>{
+    return (
+      <div> 
+        <a href = "#" target = "_blank">Pdf</a>       
+      </div>
+    );
+  }
+
 
   rowEvents = {
     onClick: (e, row, rowIndex) => {
@@ -48,35 +92,22 @@ class payslips extends Component {
     this.props.history.push('/student')
   }
 
-  handleNewEmp = (e) => {
+  handleNewPayslip = (e) => {
     e.preventDefault();
-    //this.props.history.push('/employee')
-    const {fetchPayslips} = this.props;
-    fetchPayslips();
-    console.log(" ******* handleNewEmp *******")
-    console.log(this.props)
-
-    console.log(getPayslips(this.state))
-    console.log(this.state)
-    console.log(this.props)
+    this.props.history.push('/payslip')
     
-    console.log(store.getState());
-    
-    this.render()
   }
 
-  componentWillMount() {
-    
-    const {fetchPayslips} = this.props;
-    fetchPayslips();
-    console.log(this.state.payslips)
-}
+  componentWillMount() { 
+     this.props.getPayslips();
+   }
 
   render() {
  
-    const {payslips, error, pending} = this.props;
-    console.log(payslips, error, pending)
- 
+    const {payslips, error, pending, user} = this.props;
+    console.log(payslips, error, pending, user)
+    console.log(this.state);
+
     return (
       <div className="container">
 
@@ -89,8 +120,8 @@ class payslips extends Component {
           keyField='id'
           data={this.props.payslips}
           columns={this.state.columns} />
-  
-        <button id="b1" class="btn btn-secondary" type="button" onClick={this.handleNewEmp}>Create new</button>
+         
+        <button id="b1" class="btn btn-secondary" type="button" onClick={this.handleNewPayslip}>Create new</button>
 
       </div>
     );
@@ -98,15 +129,18 @@ class payslips extends Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state)
   return {
     error: state.error,
     payslips: state.payslipReducer.payslips,
-    pending: state.pending
+    employees: state.employeeReducer.employees,
+    pending: state.pending,
+    user: state.authReducer.user
   }
 }
  
-const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchPayslips: fetchPayslipAction
+const mapDispatchToProps = dispatch => bindActionCreators({ 
+  getPayslips: getPayslips
 }, dispatch)  
 
 export default (connect(mapStateToProps, mapDispatchToProps))(payslips);

@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios'
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-import fetchEmployeesAction from '../../api/fetchEmployees';
-import {getEmployeesError, getEmployees, getEmployeesPending} 
-from '../../redux/reducers/employeeReducer';
-import store from '../../redux/store.js';
+import {getAllEmployees} from '../../redux/actions/employeeActions'
 
 class Employees extends Component {
 
@@ -42,35 +38,18 @@ class Employees extends Component {
       //console.log(`enter on row with index: ${rowIndex}`);
     }
   };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.history.push('/student')
-  }
-
+ 
   handleNewEmp = (e) => {
     e.preventDefault();
-    //this.props.history.push('/employee')
-    const {fetchEmployees} = this.props;
-    fetchEmployees();
-    console.log(" ******* handleNewEmp *******")
-    console.log(this.props)
-
-    console.log(getEmployees(this.state))
-    console.log(this.state)
-    console.log(this.props)
-    
-    console.log(store.getState());
-    
-    this.render()
+    this.props.history.push('/employee')
   }
 
-  componentWillMount() {
-    
-    const {fetchEmployees} = this.props;
-    fetchEmployees();
+  componentWillMount() {    
+    const {getAllEmployees} = this.props;
+    //fetchEmployees();
+    this.props.getAllEmployees();
     console.log(this.state.employees)
-}
+  }
 
   render() {
  
@@ -106,7 +85,8 @@ const mapStateToProps = (state) => {
 }
  
 const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchEmployees: fetchEmployeesAction
+  //fetchEmployees: fetchEmployeesAction,
+  getAllEmployees: getAllEmployees
 }, dispatch)  
 
 export default (connect(mapStateToProps, mapDispatchToProps))(Employees);

@@ -30,11 +30,7 @@ class EAAdmin extends Component {
   }
 
   constructor(props) {
-    super(props);
-
-
-
-
+    super(props); 
   }
 
   rowEvents = {

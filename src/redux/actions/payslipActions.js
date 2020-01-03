@@ -1,7 +1,10 @@
  
+import axios from 'axios'
+
 export const FETCH_PAYSLIPS_PENDING = 'FETCH_PAYSLIPS_PENDING';
 export const FETCH_PAYSLIPS_SUCCESS = 'FETCH_PAYSLIPS_SUCCESS';
 export const FETCH_PAYSLIPS_ERROR = 'FETCH_PAYSLIPS_ERROR';
+export const GET_PAYSLIPS = 'GET_PAYSLIPS';
 
 function fetchPayslipsPending() {
     return {
@@ -23,7 +26,29 @@ function fetchPayslipsError(error) {
         error: error
     }
 }
- 
+  
+function getPayslips(){
 
-export {fetchPayslipsSuccess, fetchPayslipsPending, fetchPayslipsError};
+    let token = localStorage.getItem('session')
+    
+    return (dispatch, getState)=>{
+        axios.get('http://localhost:4000/api/payslips',{
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/x-www-form-urlencoded'
+              } 
+        })
+        .then((response) => {
+            console.log("se ha invocado el servicio de payslips", response.data)
+            dispatch( { type: GET_PAYSLIPS, payload: response.data } ) 
+             
+        }, (error) => {
+            //dispatch( { type: SIGNIN, payload: error } ) 
+            console.log(error);
+                       
+        }) 
+    }
+}
 
+
+export {fetchPayslipsSuccess, fetchPayslipsPending, fetchPayslipsError, getPayslips};

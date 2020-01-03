@@ -42,13 +42,7 @@ class Orders extends Component {
 
 
 
-    {   
-      this.props.orders.map((post) => (
-      <div key={post.id}>
-          {post.id}
-      </div>
-    ))  
-    }
+
 
         <br /><br /><br />
         <h4>Orders</h4>
@@ -83,8 +77,16 @@ class Orders extends Component {
             </tr>
           </tbody>
         </table>
+ 
+        {   
+      this.props.orders.map((post) => (
+      <div key={post.id}>
+          {post.id}
+      </div>
+    ))  
+    }
 
-        <button id="be1" class="btn btn-secondary" type="button" onClick={this.test}>test</button>
+
       </div>
     );
   }

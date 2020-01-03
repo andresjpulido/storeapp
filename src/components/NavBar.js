@@ -26,14 +26,15 @@ _onToggleNav = () => {
 
   handleClick = event => {
     localStorage.setItem('session', 0);
+    console.log("Cleaning session from localstorage")
+    this.props.history.push('/')
   }
 
 
   render() {
     const { navCollapsed } = this.state
     const session = localStorage.getItem('session');
-
-console.log(session)
+ 
   if(session==0)
   return (
     <div></div>
@@ -41,7 +42,7 @@ console.log(session)
   else
   return (
     <nav class="navbar navbar-expand-md navbar-dark fixed-top">
-          <a class="navbar-brand" href="#">Oro Negro</a>
+          <a class="navbar-brand" href="#">Store</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>

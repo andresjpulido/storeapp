@@ -7,7 +7,9 @@ import Login from './Login';
 import Home from './Home';
 import Orders from './Orders';
 import Order from './Order';
-import Inventory from './Inventory';
+import Inventory from './inventory/Inventory';
+import Movement from './inventory/movement';
+import Movements from './Admin/movements';
 import ExtraHours from './ExtraHours';
 import NewProduct from './NewProduct';
 import NewEA from './EA/NewEA';
@@ -17,6 +19,7 @@ import Employee from './Admin/Employee';
 import Payslip from './Admin/Payslip';
 import Payslips from './Admin/Payslips';
 import OnePayslip from './EA/OnePayslip';
+
 
 class App extends Component {
   constructor(props) {
@@ -75,6 +78,16 @@ console.log(session)
                 exact
                 component={Inventory}
               />
+              <Route
+                path="/movement"
+                exact
+                component={Movement}
+              />    
+              <Route
+                path="/movements"
+                exact
+                component={Movements}
+              />                        
               <Route
                 path="/ea"
                 exact

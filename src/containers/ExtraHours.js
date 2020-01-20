@@ -3,7 +3,12 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {getHours} from '../redux/actions/hourActions'
-import store from '../redux/store';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect
+  } from "react-router-dom";
 
 class ExtraHours extends Component {
 
@@ -28,22 +33,18 @@ class ExtraHours extends Component {
   }
 
   componentWillMount() {   
+    const u = this.props.user;  
+    this.props.getHours(u.username);
+    console.log(this.state.unpaidHours, u.username)
+  }
 
-    console.log(this.props)
-
-    //const state = store.getState();
-    //console.log(state)
-       // console.log(state.authReducer.user)
-
-    this.props.getHours(1);
-    console.log(this.state.unpaidHours)
-    //console.log(state.authReducer.user)
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.history.push('/newea')
   }
 
   render() {
-
- console.log(this.props.user)
-
+ 
     return (
       <div className="container">
 
@@ -56,9 +57,9 @@ class ExtraHours extends Component {
           keyField='id'
           data={this.props.unpaidHours}
           columns={this.state.columns} />
-  
-        <button id="b1" class="btn btn-secondary" type="button" onClick={this.handleNewEmp}>Create new</button>
- 
+
+        <button id="move" class="btn btn-secondary" type="button" onClick={this.handleSubmit}>New</button>
+         
       </div>
     );
   }

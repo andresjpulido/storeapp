@@ -5,12 +5,13 @@ import {GET_HOURS_URL } from '../constants/webservices'
 export const GET_HOURS = "GET_HOURS"
 export const ADD_HOUR = "ADD_HOUR"
 
-export const getHours = (userId)=>{
+export const getHours = (username)=>{
     
     let token = localStorage.getItem('session')
+    console.log("URL " + GET_HOURS_URL + "/" + username + "/false")
     
     return (dispatch, getState)=>{
-        axios.get(GET_HOURS_URL + "/" + userId + "/false",{
+        axios.get(GET_HOURS_URL + "/" + username + "/false",{
             headers: {
                 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/x-www-form-urlencoded'

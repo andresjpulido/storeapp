@@ -1,28 +1,33 @@
 import * as types from '../constants/ActionTypes'
-import items from './items';  
+import { GET_ORD_OP } from '../actions/orderActions';
+import { SHOW_ERRORS } from '../actions/errorActions';  
 
-  const initialState = {orders: [{"id":666}]};
-     
-  function order (state = initialState, action) {
-    switch (action.type) {
-      case types.TEST:
-        return {
-          ...state,
-          orders: action.orders
-        }
-      case types.TEST2:
-        console.log("executing TEST2 reduce::action " + action.orders+ " - " + action.error)
-        console.log(items)
-        
-        return {
-          ...state,
-          orders: items,
-          items: items
-        }      
-
-      default:
-        return state
-    }
+  const initialState = { 
+    orders: [], 
+    error:{}
   }
-  
-  export default order;
+     
+  export default (state = initialState, action) => {
+    switch (action.type) {
+       
+      case GET_ORD_OP:
+        return {
+          ...state,
+          pending: false,
+          error: action.error,
+          orders: action.payload,
+        }
+
+        case SHOW_ERRORS:
+          console.log("action.error ::: ",action.error)
+          return {
+            ...state, 
+            error: action.error
+          } 
+
+        default:
+          return { ...state }
+      }
+    }
+     
+    export const getOrders = state => state.orders;     

@@ -64,16 +64,16 @@ _onToggleNav = () => {
           </button>
           <div class={(navCollapsed ? 'collapse' : '') + ' navbar-collapse ' + navCollapsed} id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <Link to={`/home`} class="nav-link">Home <span class="sr-only">(current)</span></Link>
+              <li class="nav-item">
+                <Link to={`/home`} class="nav-link">Home </Link>
               </li>
               <li class={this.isAdmin()}>
                 <Link to={`/admin`} class="nav-link" data-toggle="dropdown">Admin</Link>
-                <ul class="dropdown-menu">
-                  <li class="text-center"><Link to={`/admin`}>Admin</Link></li>
+                <ul class="dropdown-menu"> 
                   <li class="text-center"><Link to={`/employees`}>Employees</Link></li>
                   <li class="text-center"><Link to={`/payslips`}>Payslips</Link></li>
                   <li class="text-center"><Link to={`/movements`}>Inventory</Link></li>
+                  <li class="text-center"><Link to={`/parameters`}>Parameters</Link></li>
                 </ul>
               </li>              
               <li class="dropdown">

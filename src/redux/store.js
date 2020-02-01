@@ -4,7 +4,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import employeeReducer, * as fromEmployee from './reducers/employeeReducer'
 import hourReducer from './reducers/hourReducer'
 import inventory from './reducers/inventoryReducer'
-import order from './reducers/orderReducer'
+import orderReducer from './reducers/orderReducer'
 import payslipReducer from './reducers/payslipReducer'
 import authReducer from './reducers/authReducer'
 import inventoryReducer from './reducers/inventoryReducer'
@@ -13,12 +13,13 @@ import productTypeReducer from './reducers/productTypeReducer'
 import sizeReducer from './reducers/sizeReducer'
 import errorReducer from './reducers/errorReducer'
 import movementsReducer from './reducers/movementsReducer'
+import parameterReducer from './reducers/parameterReducer'
 
 const rootReducer = combineReducers({
     employeeReducer, 
     hourReducer,
     inventory,
-    order,
+    orderReducer,
     payslipReducer,
     authReducer,
     inventoryReducer,
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
     productTypeReducer,
     sizeReducer,
     errorReducer,
-    movementsReducer
+    movementsReducer,
+    parameterReducer
 })
 
 const store = createStore(

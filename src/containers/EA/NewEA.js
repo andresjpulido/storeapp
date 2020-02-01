@@ -47,7 +47,7 @@ class NewEA extends Component {
       <div className="container">
 
         <br /><br /><br />
-        <h4>New Extra Hour</h4>
+        <h4>New Hour</h4>
 
         <form onSubmit={this.handleSubmit}>
  

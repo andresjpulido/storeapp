@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -25,7 +24,7 @@ window.operateEvents = {
 }
 
 function activeFormatter(cell, row) {
-  var url = "http://localhost:4000/api/payslippdf/" + cell 
+  var url = "http://192.168.1.6:4000/api/payslippdf/" + cell 
 
   return (
     <div> 
@@ -41,17 +40,14 @@ class payslips extends Component {
     type: "Toki",
     size: "Small",
     payslips: [],
-    columns: [{
-      dataField: 'description',
-      text: 'Description'
-    },
+    columns: [ 
     {
       dataField: 'createdAt',
       text: 'Date',
       sort: true
     },
     {
-      dataField: 'employeeid',
+      dataField: 'employee.firstName',
       text: 'Employee',
       sort: true,
       clickToSelect: false,
@@ -107,6 +103,9 @@ class payslips extends Component {
     const {payslips, error, pending, user} = this.props;
     console.log(payslips, error, pending, user)
     console.log(this.state);
+ 
+
+let token = localStorage.getItem('session')
 
     return (
       <div className="container">
@@ -120,6 +119,7 @@ class payslips extends Component {
           keyField='id'
           data={this.props.payslips}
           columns={this.state.columns} />
+         
          
         <button id="b1" class="btn btn-secondary" type="button" onClick={this.handleNewPayslip}>Create new</button>
 

@@ -18,6 +18,7 @@ import Employees from './Admin/Employees';
 import Employee from './Admin/Employee';
 import Payslip from './Admin/Payslip';
 import Payslips from './Admin/Payslips';
+import Parameters from './Admin/Parameters'
 import OnePayslip from './EA/OnePayslip';
 
 
@@ -103,6 +104,11 @@ console.log(session)
                 exact
                 component={NewEA}
               />
+              <Route
+                path="/parameters"
+                exact
+                component={Parameters}
+              />               
               <Route
                 path="/payslip"
                 exact

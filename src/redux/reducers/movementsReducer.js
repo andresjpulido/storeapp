@@ -1,9 +1,10 @@
 import * as types from '../constants/ActionTypes'
-import { GET_MOVEMENT } from '../actions/movementsActions';
+import { GET_MOVEMENT, WEEKLY_REPORT } from '../actions/movementsActions';
 import { SHOW_ERRORS } from '../actions/errorActions';  
 
   const initialState = { 
     movements: [], 
+    weeklyMovements: [],
     error:{}
   }
      
@@ -26,10 +27,18 @@ import { SHOW_ERRORS } from '../actions/errorActions';
           error: action.error
         }          
       
+      case WEEKLY_REPORT:
+        console.log("action.error ::: ",action.error)
+        return {
+          ...state, 
+          weeklyMovements: action.payload,
+        }         
+        
       default:
         return { ...state }
     }
   }
    
   export const getMovements = state => state.movements;
+  export const weeklyReport = state => state.weeklyMovements;
    

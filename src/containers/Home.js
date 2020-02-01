@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import store from '../redux/store';
+import {getOrders} from '../redux/actions/orderActions';
 
 class Dashboard extends Component {
 
   constructor(props) {
-    super(props); 
+    super(props);     
   }
-
+ 
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.history.push('/student')
@@ -36,10 +37,8 @@ class Dashboard extends Component {
 
   render() {
     const state = store.getState();
-console.log(state)
-    console.log(state.authReducer.user)
-
-
+    console.log(state)
+    console.log(state.authReducer.user) 
 
     const user = this.props.user;
    
@@ -52,6 +51,8 @@ console.log(state)
       return (<div className="container"></div>)
     }
 
+    this.props.getOrders();
+
     return (
       <div className="container">
       <br /><br /><br />
@@ -62,8 +63,12 @@ console.log(state)
          {this.formatLastLogin()} 
 
          <h1>Notifications</h1>
-          <p class="lead">There are <span class="badge">5</span> pending orders.</p>
-          <p class="lead">There are <span class="badge">2</span> pending supplies.</p>
+         {
+            this.props.orders && this.props.orders.lenght > 0  &&
+            <p class="lead">There are <span class="badge">5</span> pending orders.</p>
+         }
+          
+           
         </div>
 
       </div>
@@ -75,11 +80,13 @@ const mapStateToProps = (state) => {
   return {
     error: state.authReducererror, 
     pending: state.pending,
-    user: state.authReducer.user
+    user: state.authReducer.user,
+    orders: state.orderReducer.orders
   }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+  getOrders
 }, dispatch) 
 
 export default (connect(mapStateToProps, mapDispatchToProps))(Dashboard);

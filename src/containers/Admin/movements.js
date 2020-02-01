@@ -1,9 +1,35 @@
 import React, { Component } from 'react';
-import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 import BootstrapTable from 'react-bootstrap-table-next';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {getMovements} from '../../redux/actions/movementsActions'
+import { getMovementsByPeriod, weeklyReport } from '../../redux/actions/movementsActions'
+
+
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
+function writeWeek(curr){
+  //let curr = new Date (2020, 0, 18)
+    let week = []
+    
+    for (let i = 1; i <= 7; i++) {
+      let first = curr.getDate() - curr.getDay() + i 
+      let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+      week.push(day)
+    }
+//console.log(curr + " >> " + week[0] + " - " + week[6])
+return week
+}
+
+function daysIntoYear(date){
+    return (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
+}
+
+
 
 class Movements extends Component {
 
@@ -12,19 +38,20 @@ class Movements extends Component {
     type: "Toki",
     size: "Small",
     movements: [],
+    weeklyMovements: [],
     columns: [      
     {
-        dataField: 'productType.name',
+        dataField: 'namepiece',
         text: 'Product',
         sortable: true,
     },
     {
-        dataField: 'size.name',
+        dataField: 'sizepiece',
         text: 'Size',
         sortable: true
     },    
     {
-        dataField: 'amount',
+        dataField: 'totalpieces',
         text: 'Total'
     }],
     columns2: [   
@@ -46,7 +73,9 @@ class Movements extends Component {
       {
           dataField: 'amount',
           text: 'Amount'
-      }] 
+      }],
+      weeks:[],
+      week:""
   }
 
   constructor(props) {
@@ -65,24 +94,45 @@ class Movements extends Component {
     }
   };
  
-  handleNewEmp = (e) => {
-    e.preventDefault();
-    this.props.history.push('/employee')
+  handleChange = (e) => {
+    const target = e.target;
+    const name = target.name;
+    const value = target.value;
+
+    this.setState({
+      [name]: value,
+    })
+     
+    var t = value.split(" - ");
+    this.props.weeklyReport(t[0], t[1])    
+    this.props.getMovementsByPeriod(t[0], t[1]);
+    
   }
 
-  componentWillMount() {    
-    this.props.getMovements();
-    console.log(this.state.employees)
+  componentWillMount() {   
+   
+    let curr = new Date (2020, 0, 1)
+    let week = []
+    var i = 0 
+    do {
+      console.log(i)
+      week = writeWeek(curr);
+      //console.log( week[0] + " - " + week[6])
+      curr = addDays(curr, 6)
+      i++;
+    //console.log(daysIntoYear(new Date(week[6])) +"<"+ daysIntoYear(new Date()))
+    this.state.weeks.push(week[0] + " - " + week[6])
+    }
+    while (daysIntoYear(new Date(week[6])) < daysIntoYear(new Date())); 
+
+    var t = this.state.weeks[this.state.weeks.length-1].split(" - ");
+    this.props.weeklyReport(t[0], t[1])
+    this.props.getMovementsByPeriod(t[0], t[1]);
+
   }
 
   render() {
- 
-    const {employees, error, pending} = this.props;
-    console.log(employees, error, pending)
- 
-    
-
-
+  
     return (
       <div className="container">
 
@@ -92,11 +142,10 @@ class Movements extends Component {
         <form>
           <div class="form-group">
             <label for="nameInput">Week:</label>
-            <select class="form-control" id="position" name="position" onChange={this.handleChange}  >
-              <option value="2019-12-29/2020-01-04">2019-12-29 - 2020-01-04</option>
-              <option value="2020-01-05/2020-01-11">2020-01-05 - 2020-01-11</option>
-              <option value="2020-01-12/2020-01-18">2020-01-12 - 2020-01-18</option>
-              <option value="2020-01-19/2020-01-25">2020-01-05 - 2020-01-11</option>
+            <select class="form-control" id="week" name="week"  
+              onChange={this.handleChange} value={this.state.weeks[0]}>                
+                  {this.state.weeks.map((item) => <option key={item.id} 
+                  value={item.id}>{item}</option>)}
             </select> 
           </div>
         </form>
@@ -107,7 +156,7 @@ class Movements extends Component {
           striped
           hover
           keyField='id'
-          data={this.props.movements}
+          data={this.props.weeklyMovements}
           columns={this.state.columns} 
          
         />
@@ -132,12 +181,14 @@ const mapStateToProps = (state) => {
   return {
     error: state.error,
     movements: state.movementsReducer.movements,
+    weeklyMovements: state.movementsReducer.weeklyMovements,
     pending: state.pending
   }
 }
  
 const mapDispatchToProps = dispatch => bindActionCreators({
-    getMovements: getMovements
+    getMovementsByPeriod: getMovementsByPeriod,
+    weeklyReport: weeklyReport
 }, dispatch)  
 
 export default (connect(mapStateToProps, mapDispatchToProps))(Movements);

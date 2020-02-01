@@ -1,91 +1,53 @@
 import React, { Component } from 'react';
+import BootstrapTable from 'react-bootstrap-table-next';
 import { connect } from 'react-redux'; 
-import findOrders from '../redux/actions/orderActions';
-import getAllOrders from '../redux/actions/orderActions';
-class Orders extends Component {
+import {getOrders} from '../redux/actions/orderActions';
 
-  constructor(props) {
-    super(props); 
-    this.test = this.test.bind(this);
+class Orders extends Component {
+ 
+  state = {
+    amount: 0,
+    type: "Toki",
+    size: "Small",
+    orders: [],
+    columns: [{
+      dataField: 'id_orderStatus',
+      text: 'Status'
+    },
+    {
+      dataField: 'customer.firstName',
+      text: 'Customer',
+      sort: true
+    },
+    {
+      dataField: 'createdAt',
+      text: 'Date',
+      sort: true
+    }] 
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.history.push('/student')
   }
- 
-  componentDidMount(){
-    //this.props.findOrders("x","y");
-    //console.log(this.props)    
-  }
-
-  test(){
-    getAllOrders("test x","test y");
-     
-    const {
-      findOrders 
-    } = this.props;
-    findOrders("test x","test y");
-    console.log(this.props)
-  }
-
+  
   render() {
-    this.props.findOrders("x","y");
-    console.log(this.props)
-    const {
-      orders,
-  } = this.props;
-  console.log(orders)
-
+    this.props.getOrders();
+      
     return (
-      <div className="container">
-
-
-
-
+      <div className="container"> 
 
         <br /><br /><br />
         <h4>Orders</h4>
 
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Product</th>
-              <th scope="col">creation date</th>
-              <th scope="col">Note</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>toki</td>
-              <td>10/01/2019</td>
-              <td>New</td>
-            </tr>
-            <tr>
-              <th scope="row">1</th>
-              <td>Manaia</td>
-              <td>10/01/2019</td>
-              <td>New</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>toki</td>
-              <td>10/01/2019</td>
-              <td>Repair</td>
-            </tr>
-          </tbody>
-        </table>
+        <BootstrapTable
+          striped
+          hover
+          keyField='id'
+          data={this.props.orders}
+          columns={this.state.columns} />
  
-        {   
-      this.props.orders.map((post) => (
-      <div key={post.id}>
-          {post.id}
-      </div>
-    ))  
-    }
-
+        
 
       </div>
     );
@@ -93,12 +55,12 @@ class Orders extends Component {
 }
  
 const mapStateToProps = state => ({
-    orders : state.order.orders,
+    orders : state.orderReducer.orders,
     items: state.items
 });
 
 const mapDispatchToProps = {
-  findOrders,
+  getOrders,
 }; 
 
 export default connect(mapStateToProps, mapDispatchToProps) (Orders);

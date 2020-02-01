@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {getAllEmployees} from '../../redux/actions/employeeActions'
+import {getAllEmployees, getEmployeeById} from '../../redux/actions/employeeActions'
 
 class Employees extends Component {
 
@@ -12,7 +11,12 @@ class Employees extends Component {
     type: "Toki",
     size: "Small",
     employees: [],
-    columns: [{
+    columns: [
+      {
+        dataField: 'id',
+        text: 'id'
+      },
+      {
       dataField: 'firstName',
       text: 'Name'
     },
@@ -31,8 +35,9 @@ class Employees extends Component {
 
   rowEvents = {
     onClick: (e, row, rowIndex) => {
-      console.log(`clicked on row with index: ${row.id}`);
-      this.props.history.push('/payslip')
+      console.log(`clicked on row with index: ${row.id} - ${rowIndex}`);
+      this.props.getEmployeeById(row.id, this.props.employees)
+      this.props.history.push('/employee')
     },
     onMouseEnter: (e, row, rowIndex) => {
       //console.log(`enter on row with index: ${rowIndex}`);
@@ -56,6 +61,8 @@ class Employees extends Component {
     const {employees, error, pending} = this.props;
     console.log(employees, error, pending)
  
+     
+
     return (
       <div className="container">
 
@@ -67,10 +74,9 @@ class Employees extends Component {
           hover
           keyField='id'
           data={this.props.employees}
-          columns={this.state.columns} />
-  
-        <button id="b1" class="btn btn-secondary" type="button" onClick={this.handleNewEmp}>Create new</button>
-
+          columns={this.state.columns}
+          rowEvents={this.rowEvents} />
+   
       </div>
     );
   }
@@ -86,7 +92,8 @@ const mapStateToProps = (state) => {
  
 const mapDispatchToProps = dispatch => bindActionCreators({
   //fetchEmployees: fetchEmployeesAction,
-  getAllEmployees: getAllEmployees
+  getAllEmployees: getAllEmployees,
+  getEmployeeById: getEmployeeById
 }, dispatch)  
 
 export default (connect(mapStateToProps, mapDispatchToProps))(Employees);

@@ -1,5 +1,6 @@
 //import * as types from '../constants/ActionTypes'
-import { FETCH_EMPLOYEES_PENDING, FETCH_EMPLOYEES_SUCCESS, FETCH_EMPLOYEES_ERROR, FETCH_EMPLOYEES, CREATE_EMP }
+import { FETCH_EMPLOYEES_PENDING, FETCH_EMPLOYEES_SUCCESS, FETCH_EMPLOYEES_ERROR, 
+  FETCH_EMPLOYEES, CREATE_EMP, GET_EMPLOYEE }
   from '../actions/employeeActions';
 
 const initialState = {
@@ -50,6 +51,12 @@ export default (state = initialState, action) => {
           employee: action.payload,
         }
 
+    case GET_EMPLOYEE:
+        return {
+          ...state,
+          employee: action.payload
+        }
+    
     default:
       return { ...state }
   }

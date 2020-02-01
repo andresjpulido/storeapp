@@ -1,16 +1,28 @@
-import * as types from '../constants/ActionTypes'
-import items from '../reducers/items';  
-const findOrders = (text, error) => ({
-    type: types.TEST2,
-    orders: text,
-    error: error
-});
+import axios from 'axios'
+import {GET_ORD_OPE_URL } from '../constants/webservices'
+import {SHOW_ERRORS} from '../actions/errorActions'
+export const GET_ORD_OP = 'GET_ORD_OP';
 
-export default findOrders;
- 
-export const getAllOrders = () => dispatch => {
-    console.log("getAllOrders")
-      dispatch(findOrders(items))
+function getOrders(){
+
+    let token = localStorage.getItem('session')
     
-  }
- 
+    return (dispatch, getState)=>{
+        axios.get(GET_ORD_OPE_URL,{
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/x-www-form-urlencoded'
+              } 
+        })
+        .then((response) => {            
+            dispatch( { type: GET_ORD_OP, payload: response.data } ) 
+             
+        })
+        .catch(function (error) {
+            dispatch( { type: SHOW_ERRORS, error: error} )
+        });
+    }
+}   
+
+
+export { getOrders };

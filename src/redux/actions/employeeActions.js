@@ -6,6 +6,7 @@ export const FETCH_EMPLOYEES_PENDING = 'FETCH_EMPLOYEES_PENDING';
 export const FETCH_EMPLOYEES_SUCCESS = 'FETCH_EMPLOYEES_SUCCESS';
 export const FETCH_EMPLOYEES_ERROR = 'FETCH_EMPLOYEES_ERROR';
 export const CREATE_EMP = 'CREATE_EMP';
+export const GET_EMPLOYEE = 'GET_EMPLOYEE'
 
 
 
@@ -53,6 +54,19 @@ function getAllEmployees(){
     }
 }
 
+function getEmployeeById(id, employees){
+    return (dispatch, getState)=>{
+        //dispatch( { type: GET_EMPLOYEE, payload: employees[id] } )  
+ 
+        for(var i=0; i <= employees.length - 1; i++){
+            console.log('comparacion ' , employees[i].id,  i)
+            if(employees[i].id == id)
+                dispatch( { type: GET_EMPLOYEE, payload: employees[i] } )  
+        }
+       
+    }
+}
+
 function createEmployee(emp){
 
     let token = localStorage.getItem('session')
@@ -93,5 +107,6 @@ function createEmployee(emp){
     }
 }
 
-export {fetchEmployeesSuccess, fetchEmployeesPending, fetchEmployeesError, getAllEmployees, createEmployee};
+export {fetchEmployeesSuccess, fetchEmployeesPending, fetchEmployeesError, 
+    getAllEmployees, createEmployee, getEmployeeById};
 

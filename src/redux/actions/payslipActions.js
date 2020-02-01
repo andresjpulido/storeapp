@@ -1,6 +1,8 @@
  
 import axios from 'axios'
 
+import {GET_PAYSLIPS_URL } from '../constants/webservices'
+
 export const FETCH_PAYSLIPS_PENDING = 'FETCH_PAYSLIPS_PENDING';
 export const FETCH_PAYSLIPS_SUCCESS = 'FETCH_PAYSLIPS_SUCCESS';
 export const FETCH_PAYSLIPS_ERROR = 'FETCH_PAYSLIPS_ERROR';
@@ -32,7 +34,7 @@ function getPayslips(){
     let token = localStorage.getItem('session')
     
     return (dispatch, getState)=>{
-        axios.get('http://localhost:4000/api/payslips',{
+        axios.get(GET_PAYSLIPS_URL,{
             headers: {
                 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/x-www-form-urlencoded'

@@ -32,6 +32,10 @@ class Employee extends Component {
     this.props.history.push('/employees')
   }
 
+  back = () => {
+    this.props.history.push('/employees')
+  }
+
   render() {
     return (
       <div className="container">
@@ -98,6 +102,8 @@ class Employee extends Component {
             value={this.props.employee.accountName} onChange={this.handleChange} />
           </div>                                                       
         </form>
+        <button type="button" className="btn btn-primary float-left" onClick={this.back}>Back</button>
+        
         <button type="submit" className="btn btn-primary float-right" onClick={this.handleSubmit}>Save</button>
       </div>
     );

@@ -1,7 +1,7 @@
 //Constant of web services
 
 //host
-export const HOST = 'http://localhost:4000'
+export const HOST = 'http://192.168.1.6:4000'
 //signin
 export const SIGNIN_URL = HOST + '/api/signIn'
 //employees
@@ -23,3 +23,12 @@ export const GET_PRODUCTTYPE_URL = HOST + '/api/producttypes'
 export const GET_SIZE_URL = HOST + '/api/sizes'
 
 export const NEW_MOV_URL = HOST + '/api/movement'
+
+export const REP_MOV_URL = HOST + '/api/movement/report'
+
+export const GET_PAYSLIPS_URL = HOST + '/api/payslips'
+
+export const GET_ORD_OPE_URL = HOST + '/api/orders/opened'
+
+export const GET_PARAMETER_URL = HOST + '/api/parameters'
+

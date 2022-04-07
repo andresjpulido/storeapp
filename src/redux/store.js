@@ -1,7 +1,6 @@
 import thunk from 'redux-thunk'
-import { getAllProducts } from './actions'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import employeeReducer, * as fromEmployee from './reducers/employeeReducer'
+import employeeReducer from './reducers/employeeReducer'
 import hourReducer from './reducers/hourReducer'
 import inventory from './reducers/inventoryReducer'
 import orderReducer from './reducers/orderReducer'
@@ -11,9 +10,19 @@ import inventoryReducer from './reducers/inventoryReducer'
 import operationReducer from './reducers/operationReducer'
 import productTypeReducer from './reducers/productTypeReducer'
 import sizeReducer from './reducers/sizeReducer'
-import errorReducer from './reducers/errorReducer'
+import generalReducer from './reducers/generalReducer'
 import movementsReducer from './reducers/movementsReducer'
 import parameterReducer from './reducers/parameterReducer'
+import reportReducer from './reducers/reportReducer'
+import statusReducer from './reducers/statusReducer'
+import customerReducer from './reducers/customerReducer'
+import imageReducer from './reducers/imageReducer' 
+import userReducer from './reducers/userReducer'
+import rolReducer from './reducers/rolReducer'
+import resourceReducer from './reducers/resourceReducer'
+import productReducer from './reducers/productReducer'
+import locationReducer from './reducers/locationReducer'
+
 
 const rootReducer = combineReducers({
     employeeReducer, 
@@ -26,9 +35,18 @@ const rootReducer = combineReducers({
     operationReducer,
     productTypeReducer,
     sizeReducer,
-    errorReducer,
+    generalReducer,
     movementsReducer,
-    parameterReducer
+    parameterReducer,
+    reportReducer,
+    statusReducer,
+    customerReducer,
+    imageReducer,
+    userReducer,
+    rolReducer,
+    resourceReducer,
+    productReducer,
+    locationReducer
 })
 
 const store = createStore(

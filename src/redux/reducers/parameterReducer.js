@@ -1,26 +1,23 @@
-import * as types from '../constants/ActionTypes'
-import { GET_PARAMETERS } from '../actions/parameterActions';
+import { GET_PARAMETERS } from "../actions/parameterActions";
 
-  const initialState = {
-    parameters: [] 
-  }
-     
-  export default (state = initialState, action) => {
-    switch (action.type) {
-      
-      case GET_PARAMETERS:
-        return {
-          ...state,
-          pending: false,
-          error: action.error,
-          parameters: action.payload,
-        }
- 
-      default:
-        return { ...state }
-    }
-  }
-   
+const initialState = {
+	parameters: [],
+};
 
-  
-  export const getParameters = state => state.parameters;
+const result = (state = initialState, action) => {
+	switch (action.type) {
+		case GET_PARAMETERS:
+			return {
+				...state,
+				pending: false,
+				error: action.error,
+				parameters: action.payload,
+			};
+
+		default:
+			return { ...state };
+	}
+};
+
+export default result;
+export const getParameters = (state) => state.parameters;

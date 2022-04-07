@@ -1,11 +1,10 @@
-import * as types from '../constants/ActionTypes'
 import { GET_OPERATION } from '../actions/operationActions';
 
   const initialState = {
     operations: [] 
   }
      
-  export default (state = initialState, action) => {
+const result = (state = initialState, action) => {
     switch (action.type) {
       
       case GET_OPERATION:
@@ -22,5 +21,5 @@ import { GET_OPERATION } from '../actions/operationActions';
   }
    
 
-  
+  export default result;
   export const getAllOperations = state => state.operations; 

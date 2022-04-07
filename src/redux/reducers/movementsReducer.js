@@ -1,4 +1,3 @@
-import * as types from '../constants/ActionTypes'
 import { GET_MOVEMENT, WEEKLY_REPORT } from '../actions/movementsActions';
 import { SHOW_ERRORS } from '../actions/errorActions';  
 
@@ -8,7 +7,7 @@ import { SHOW_ERRORS } from '../actions/errorActions';
     error:{}
   }
      
-  export default (state = initialState, action) => {
+const result = (state = initialState, action) => {
     switch (action.type) {
        
       case GET_MOVEMENT:
@@ -21,14 +20,12 @@ import { SHOW_ERRORS } from '../actions/errorActions';
  
 
       case SHOW_ERRORS:
-        console.log("action.error ::: ",action.error)
         return {
           ...state, 
           error: action.error
         }          
       
       case WEEKLY_REPORT:
-        console.log("action.error ::: ",action.error)
         return {
           ...state, 
           weeklyMovements: action.payload,
@@ -39,6 +36,7 @@ import { SHOW_ERRORS } from '../actions/errorActions';
     }
   }
    
+  export default result;
   export const getMovements = state => state.movements;
   export const weeklyReport = state => state.weeklyMovements;
    

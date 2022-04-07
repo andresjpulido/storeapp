@@ -1,18 +1,22 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 
-class Footer extends Component {
-  render() {
+export default function Footer(props) {
+
+  const user = useSelector(state => state.authReducer.user)
+
+  if (!user ||  !user.token)
+    return (<div></div>)
+  else
     return (
-      <div>
+      <Fragment>
         <br /><br /><br /><br />
         <footer className="footer">
-          <div className="text-center">© 2019 Copyright
+          <div className="text-center">© 2021 Developed by
             <a href="http://www.andresjpulido.com/"> AP</a>
           </div>
         </footer>
-      </div>
+      </Fragment>
     );
-  }
-}
 
-export default Footer;
+}

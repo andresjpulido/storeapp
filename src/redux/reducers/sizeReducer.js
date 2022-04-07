@@ -1,11 +1,10 @@
-import * as types from '../constants/ActionTypes'
 import { GET_SIZE } from '../actions/sizeActions';
 
   const initialState = {
     sizes: [] 
   }
      
-  export default (state = initialState, action) => {
+const result = (state = initialState, action) => {
     switch (action.type) {
       
       case GET_SIZE:
@@ -22,5 +21,5 @@ import { GET_SIZE } from '../actions/sizeActions';
   }
    
 
-  
+  export default result;
   export const getSizes = state => state.sizes; 

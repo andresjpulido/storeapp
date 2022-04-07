@@ -1,112 +1,138 @@
-import axios from 'axios'
-import {GET_EMP_URL, NEW_EMP_URL } from '../constants/webservices'
+import { EMPLOYEES_URL } from '../constants/webservices';
+import { PENDING, FINISHED, ALERT } from '../constants/ActionTypes';
+import axios from 'axios';
+import ActionUtility from './utilAction';
 
-export const FETCH_EMPLOYEES = 'FETCH_EMPLOYEES';
-export const FETCH_EMPLOYEES_PENDING = 'FETCH_EMPLOYEES_PENDING';
-export const FETCH_EMPLOYEES_SUCCESS = 'FETCH_EMPLOYEES_SUCCESS';
-export const FETCH_EMPLOYEES_ERROR = 'FETCH_EMPLOYEES_ERROR';
-export const CREATE_EMP = 'CREATE_EMP';
-export const GET_EMPLOYEE = 'GET_EMPLOYEE'
-
-
-
-function fetchEmployeesPending() {
-    return {
-        type: FETCH_EMPLOYEES_PENDING
-    }
-}
-
-function fetchEmployeesSuccess(employees) {
-    return {
-        type: FETCH_EMPLOYEES_SUCCESS, 
-        payload :{ employees }
-    }
-}
-
-function fetchEmployeesError(error) {
-    return {
-        type: FETCH_EMPLOYEES_ERROR,
-        error: error
-    }
-}
+export const ADD_EMPLOYEE = 'ADD_EMPLOYEE';
+export const GET_EMPLOYEE = 'GET_EMPLOYEE';
+export const GET_EMPLOYEES = 'GET_EMPLOYEES';
+export const UPD_EMPLOYEE = 'UPD_EMPLOYEE';
+export const NEW_EMPLOYEE = 'NEW_EMPLOYEE';
  
-
-function getAllEmployees(){
-
-    let token = localStorage.getItem('session')
+function readAllEmployee(queryObj) {
     
-    return (dispatch, getState)=>{
-        axios.get(GET_EMP_URL,{
+    return (dispatch, getState) => {
+        ActionUtility.invokeServiceGet(dispatch, GET_EMPLOYEES, EMPLOYEES_URL, queryObj);
+    }
+}
+
+function readOneEmployee(id) {
+    let url = EMPLOYEES_URL + "/" + id
+    return (dispatch, getState) => {
+        ActionUtility.invokeServiceGet(dispatch, GET_EMPLOYEE, url);
+    }
+}
+
+function createEmployee(emp) {
+
+    let empObj = {
+        firstName: emp.firstName,
+        lastName: emp.lastName,
+        movil: emp.movil,
+        address: emp.address,
+        typeDocument: emp.typeDocument,
+        document: emp.document,
+        birthDate: emp.birthDate,
+        ird: emp.ird,
+        email: emp.email,
+        position: emp.position,
+        bankName: emp.bankName,
+        accountNumber: emp.accountNumber
+    }
+
+    return (dispatch, getState) => {
+        ActionUtility.invokeServicePost(dispatch, ADD_EMPLOYEE, empObj, EMPLOYEES_URL);
+    }
+}
+
+function deleteEmployee(ids) {
+
+    return (dispatch, getState) => {
+
+        let token = localStorage.getItem('session')
+
+        dispatch({ type: PENDING, payload: null })
+
+        const productTypesObj = {
+            ids: ids
+        }
+        axios.delete(EMPLOYEES_URL, {
             headers: {
                 'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/x-www-form-urlencoded'
-              } 
+                'content-type': 'application/json'
+            },
+            data: productTypesObj
         })
-        .then((response) => {
-            console.log("Employees:::",response.data)
-            dispatch( { type: FETCH_EMPLOYEES, payload: response.data } ) 
-             
-        }, (error) => {
-            //dispatch( { type: SIGNIN, payload: error } ) 
-            console.log(error);
-                       
-        }) 
+
+            .then((response) => {
+                dispatch({
+                    type: ALERT, payload: {
+                        type: "SUCCESS",
+                        description: "Your request has been successfully processed."
+                    }
+                })
+                dispatch(readAllEmployee());
+            })
+
+            .catch(function (error) {
+
+                if (error.response) {
+
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+
+                    if (error.response.data) {
+
+                        dispatch({
+                            type: ALERT, payload: {
+                                type: "ERROR",
+                                description: error.response.data.message
+                            }
+                        })
+                        dispatch({ type: FINISHED, payload: null })
+
+                    }
+
+                } else if (error.request) {
+                    dispatch({
+                        type: ALERT, payload: {
+                            type: "ERROR",
+                            description: error.request
+                        }
+                    })
+
+                } else {
+                    dispatch({
+                        type: ALERT, payload: {
+                            type: "ERROR",
+                            description: error.message
+                        }
+                    })
+
+                }
+
+                console.log(error.config);
+
+                if (!error.response) {
+                    dispatch({
+                        type: ALERT, payload: {
+                            type: "ERROR",
+                            description: "No connection with the server."
+                        }
+                    })
+                    dispatch({ type: FINISHED, payload: null })
+                }
+
+            })
     }
 }
 
-function getEmployeeById(id, employees){
-    return (dispatch, getState)=>{
-        //dispatch( { type: GET_EMPLOYEE, payload: employees[id] } )  
- 
-        for(var i=0; i <= employees.length - 1; i++){
-            console.log('comparacion ' , employees[i].id,  i)
-            if(employees[i].id == id)
-                dispatch( { type: GET_EMPLOYEE, payload: employees[i] } )  
-        }
-       
+function updateEmployee(employee) {
+    return (dispatch, getState) => {
+        ActionUtility.invokeServicePUT(dispatch, UPD_EMPLOYEE, employee, EMPLOYEES_URL);
     }
 }
 
-function createEmployee(emp){
-
-    let token = localStorage.getItem('session')
-    console.log("createEmployee " , emp)
-    const qs = require('qs');
-
-    return (dispatch, getState)=>{
-        axios.post(NEW_EMP_URL,qs.stringify({
-            firstName: emp.firstName,
-            lastName: emp.lastName,
-            movil: emp.movil,
-            address:emp.address,
-            typeDocument:emp.typeDocument,
-            document:emp.document,
-            birthDate:emp.birthDate,
-            ird:emp.ird,
-            email:emp.email,
-            position: emp.position,       
-            bankName: emp.bankName,
-            accountNumber: emp.accountNumber
-        }),
-        {
-            headers: {
-                'Authorization': 'Bearer ' + token,               
-                'content-type': 'application/x-www-form-urlencoded'
-            }
-            
-        })
-        .then((response) => {
-            console.log("Employees:::",response.data)
-            dispatch( { type: CREATE_EMP, payload: response.data } ) 
-             
-        }, (error) => {
-            //dispatch( { type: SIGNIN, payload: error } ) 
-            console.log(error);
-                       
-        }) 
-    }
-}
-
-export {fetchEmployeesSuccess, fetchEmployeesPending, fetchEmployeesError, 
-    getAllEmployees, createEmployee, getEmployeeById};
+export { readAllEmployee, createEmployee, readOneEmployee, deleteEmployee, updateEmployee };
 

@@ -1,4 +1,3 @@
-import * as types from '../constants/ActionTypes'
 import { GET_INVENTORY, GET_MOVEMENT, CREATE_MOV }
   from '../actions/inventoryActions';
 import { SHOW_ERRORS } from '../actions/errorActions';  
@@ -10,7 +9,7 @@ import { SHOW_ERRORS } from '../actions/errorActions';
     error:{}
   }
      
-  export default (state = initialState, action) => {
+const result = (state = initialState, action) => {
     switch (action.type) {
       
       case GET_INVENTORY:
@@ -51,7 +50,7 @@ import { SHOW_ERRORS } from '../actions/errorActions';
   }
    
 
-  
+  export default result;
   export const getAll = state => state.inventory;
   export const getAllMovements = state => state.movements;
   export const newMovement = state => state.newMovement;
